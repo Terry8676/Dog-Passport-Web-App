@@ -1,0 +1,59 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f5f1ea;
+  color: #2b2b2b;
+}
+
+header {
+  background: #2f6f5e;
+  color: white;
+  padding: 20px 16px;
+  text-align: center;
+}
+header h1 { margin: 0; font-size: 1.4rem; }
+header p { margin: 4px 0 0; opacity: 0.85; }
+
+main { max-width: 520px; margin: 0 auto; padding: 16px; }
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.card h2, .card h3 { margin: 0 0 8px; }
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 12px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #2f6f5e;
+  color: white;
+}
+form button { width: 100%; }
+
+.actions { display: flex; gap: 8px; margin: 12px 0; }
+.actions button { flex: 1; }
+.given { background: #2f8f4e; }
+.skipped { background: #d99a1c; }
+.unable { background: #c0453a; }
+
+.meta { color: #666; font-size: 0.9rem; margin: 2px 0; }
+.status { font-weight: 600; margin: 8px 0 4px; }
+.history { margin: 8px 0 0; padding-left: 18px; font-size: 0.9rem; color: #444; }
+.error { color: #c0453a; }

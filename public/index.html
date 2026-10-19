@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dog Care Passport</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Dog Care Passport</h1>
+    <p>Medication log</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Add a medication</h2>
+      <form id="med-form">
+        <input name="dog_name" placeholder="Dog's name" required>
+        <input name="name" placeholder="Medication" required>
+        <input name="dose" placeholder="Dose (e.g. 1 tablet)">
+        <input name="schedule" placeholder="Schedule (e.g. 8am daily)">
+        <button type="submit">Add medication</button>
+      </form>
+      <p id="form-error" class="error" hidden></p>
+    </section>
+
+    <section id="med-list"></section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
