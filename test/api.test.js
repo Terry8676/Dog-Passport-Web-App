@@ -28,16 +28,30 @@ test("GET /api/health returns ok", async () => {
   });
 });
 
-test("GET /api/meds requires login", async () => {
+test("GET /api/dogs requires login", async () => {
   await withServer(async (base) => {
-    const res = await fetch(`${base}/api/meds`);
+    const res = await fetch(`${base}/api/dogs`);
     assert.strictEqual(res.status, 401);
   });
 });
 
-test("POST /api/meds requires login", async () => {
+test("POST /api/dogs requires login", async () => {
   await withServer(async (base) => {
-    const res = await postJson(base, "/api/meds", { dog_name: "Buddy", name: "Apoquel" });
+    const res = await postJson(base, "/api/dogs", { name: "Buddy" });
+    assert.strictEqual(res.status, 401);
+  });
+});
+
+test("POST /api/meds/1/logs requires login", async () => {
+  await withServer(async (base) => {
+    const res = await postJson(base, "/api/meds/1/logs", { status: "given" });
+    assert.strictEqual(res.status, 401);
+  });
+});
+
+test("POST /api/invites/redeem requires login", async () => {
+  await withServer(async (base) => {
+    const res = await postJson(base, "/api/invites/redeem", { code: "ABC" });
     assert.strictEqual(res.status, 401);
   });
 });
