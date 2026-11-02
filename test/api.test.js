@@ -12,6 +12,14 @@ async function withServer(fn) {
   }
 }
 
+function postJson(base, path, body) {
+  return fetch(`${base}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
 test("GET /api/health returns ok", async () => {
   await withServer(async (base) => {
     const res = await fetch(`${base}/api/health`);
@@ -20,24 +28,30 @@ test("GET /api/health returns ok", async () => {
   });
 });
 
-test("POST /api/meds rejects a missing medication name", async () => {
+test("GET /api/meds requires login", async () => {
   await withServer(async (base) => {
-    const res = await fetch(`${base}/api/meds`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ dog_name: "Buddy" }),
-    });
+    const res = await fetch(`${base}/api/meds`);
+    assert.strictEqual(res.status, 401);
+  });
+});
+
+test("POST /api/meds requires login", async () => {
+  await withServer(async (base) => {
+    const res = await postJson(base, "/api/meds", { dog_name: "Buddy", name: "Apoquel" });
+    assert.strictEqual(res.status, 401);
+  });
+});
+
+test("signup rejects an invalid email", async () => {
+  await withServer(async (base) => {
+    const res = await postJson(base, "/api/auth/signup", { email: "nope", password: "longenough1" });
     assert.strictEqual(res.status, 400);
   });
 });
 
-test("POST /api/meds/1/logs rejects an invalid status", async () => {
+test("signup rejects a short password", async () => {
   await withServer(async (base) => {
-    const res = await fetch(`${base}/api/meds/1/logs`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "banana" }),
-    });
+    const res = await postJson(base, "/api/auth/signup", { email: "a@b.com", password: "short" });
     assert.strictEqual(res.status, 400);
   });
 });

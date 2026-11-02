@@ -57,3 +57,26 @@ form button { width: 100%; }
 .status { font-weight: 600; margin: 8px 0 4px; }
 .history { margin: 8px 0 0; padding-left: 18px; font-size: 0.9rem; color: #444; }
 .error { color: #c0453a; }
+
+[hidden] { display: none !important; }
+
+.who {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+.who button {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+#auth-form button { width: 100%; margin-bottom: 8px; }
+button.secondary {
+  background: white;
+  color: #2f6f5e;
+  border: 1px solid #2f6f5e;
+}
