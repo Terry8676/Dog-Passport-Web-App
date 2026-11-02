@@ -10,22 +10,39 @@
   <header>
     <h1>Dog Care Passport</h1>
     <p>Medication log</p>
+    <div class="who" id="who" hidden>
+      <span id="user-email"></span>
+      <button id="logout-btn" type="button">Log out</button>
+    </div>
   </header>
 
   <main>
-    <section class="card">
-      <h2>Add a medication</h2>
-      <form id="med-form">
-        <input name="dog_name" placeholder="Dog's name" required>
-        <input name="name" placeholder="Medication" required>
-        <input name="dose" placeholder="Dose (e.g. 1 tablet)">
-        <input name="schedule" placeholder="Schedule (e.g. 8am daily)">
-        <button type="submit">Add medication</button>
+    <section id="auth-view" class="card" hidden>
+      <h2>Sign in</h2>
+      <form id="auth-form">
+        <input name="email" type="email" placeholder="Email" autocomplete="email" required>
+        <input name="password" type="password" placeholder="Password (8+ characters)" autocomplete="current-password" required>
+        <button type="submit">Log in</button>
+        <button type="button" id="signup-btn" class="secondary">Create account</button>
       </form>
-      <p id="form-error" class="error" hidden></p>
+      <p id="auth-error" class="error" hidden></p>
     </section>
 
-    <section id="med-list"></section>
+    <div id="app-view" hidden>
+      <section class="card">
+        <h2>Add a medication</h2>
+        <form id="med-form">
+          <input name="dog_name" placeholder="Dog's name" required>
+          <input name="name" placeholder="Medication" required>
+          <input name="dose" placeholder="Dose (e.g. 1 tablet)">
+          <input name="schedule" placeholder="Schedule (e.g. 8am daily)">
+          <button type="submit">Add medication</button>
+        </form>
+        <p id="form-error" class="error" hidden></p>
+      </section>
+
+      <section id="med-list"></section>
+    </div>
   </main>
 
   <script src="app.js"></script>

@@ -1,12 +1,48 @@
+const authView = document.getElementById("auth-view");
+const appView = document.getElementById("app-view");
+const who = document.getElementById("who");
+const userEmail = document.getElementById("user-email");
+const logoutBtn = document.getElementById("logout-btn");
+const authForm = document.getElementById("auth-form");
+const signupBtn = document.getElementById("signup-btn");
+const authError = document.getElementById("auth-error");
 const medList = document.getElementById("med-list");
 const form = document.getElementById("med-form");
 const formError = document.getElementById("form-error");
 
+// ---------- helpers ----------
+
+function showAuth() {
+  authView.hidden = false;
+  appView.hidden = true;
+  who.hidden = true;
+  medList.replaceChildren();
+}
+
+function showApp(user) {
+  authView.hidden = true;
+  appView.hidden = false;
+  who.hidden = false;
+  userEmail.textContent = user.email;
+  authForm.reset();
+  loadMeds();
+}
+
 async function api(url, options) {
   const res = await fetch(url, options);
   const data = await res.json();
+  // A 401 from a medication call means the login expired: back to sign-in.
+  if (res.status === 401 && !url.startsWith("/api/auth/")) showAuth();
   if (!res.ok) throw new Error(data.error || "Something went wrong");
   return data;
+}
+
+function postJson(url, body) {
+  return api(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 }
 
 function formatTime(iso) {
@@ -21,6 +57,8 @@ function el(tag, className, text) {
   if (text) node.textContent = text;
   return node;
 }
+
+// ---------- medications ----------
 
 async function renderMed(med) {
   const card = el("article", "card");
@@ -48,11 +86,7 @@ async function renderMed(med) {
     const btn = el("button", s, s.charAt(0).toUpperCase() + s.slice(1));
     btn.addEventListener("click", async () => {
       try {
-        await api(`/api/meds/${med.id}/logs`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: s }),
-        });
+        await postJson(`/api/meds/${med.id}/logs`, { status: s });
         await loadLogs();
       } catch (err) {
         alert(err.message);
@@ -83,13 +117,8 @@ async function loadMeds() {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   formError.hidden = true;
-  const body = Object.fromEntries(new FormData(form));
   try {
-    await api("/api/meds", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    await postJson("/api/meds", Object.fromEntries(new FormData(form)));
     form.reset();
     await loadMeds();
   } catch (err) {
@@ -98,4 +127,40 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-loadMeds();
+// ---------- accounts ----------
+
+async function authenticate(path) {
+  authError.hidden = true;
+  try {
+    const user = await postJson(path, Object.fromEntries(new FormData(authForm)));
+    showApp(user);
+  } catch (err) {
+    authError.textContent = err.message;
+    authError.hidden = false;
+  }
+}
+
+authForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  authenticate("/api/auth/login");
+});
+
+signupBtn.addEventListener("click", () => {
+  if (!authForm.reportValidity()) return;
+  authenticate("/api/auth/signup");
+});
+
+logoutBtn.addEventListener("click", async () => {
+  await postJson("/api/auth/logout", {});
+  showAuth();
+});
+
+// ---------- start ----------
+
+(async function init() {
+  try {
+    showApp(await api("/api/auth/me"));
+  } catch {
+    showAuth();
+  }
+})();
