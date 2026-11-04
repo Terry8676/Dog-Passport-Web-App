@@ -56,3 +56,19 @@ ALTER TABLE medications ALTER COLUMN dog_name DROP NOT NULL;
 ALTER TABLE med_logs
   ADD COLUMN logged_by INT REFERENCES users(id),
   ADD COLUMN pills_used INT NOT NULL DEFAULT 0;
+
+-- Keep history when a user is deleted
+ALTER TABLE medications
+  DROP CONSTRAINT medications_created_by_fkey,
+  ADD CONSTRAINT medications_created_by_fkey
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL;
+
+ALTER TABLE med_logs
+  DROP CONSTRAINT med_logs_logged_by_fkey,
+  ADD CONSTRAINT med_logs_logged_by_fkey
+    FOREIGN KEY (logged_by) REFERENCES users(id) ON DELETE SET NULL;
+
+ALTER TABLE invites
+  DROP CONSTRAINT invites_used_by_fkey,
+  ADD CONSTRAINT invites_used_by_fkey
+    FOREIGN KEY (used_by) REFERENCES users(id) ON DELETE SET NULL;
