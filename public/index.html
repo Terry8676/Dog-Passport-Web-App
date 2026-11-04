@@ -7,43 +7,46 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Dog Care Passport</h1>
-    <p>Medication log</p>
-    <div class="who" id="who" hidden>
-      <span id="user-email"></span>
-      <button id="logout-btn" type="button">Log out</button>
-    </div>
-  </header>
-
-  <main>
-    <section id="auth-view" class="card" hidden>
+  <section id="auth-view" class="auth" hidden>
+    <h1 class="brand">Dog Care Passport</h1>
+    <div class="card">
       <h2>Sign in</h2>
       <form id="auth-form">
-        <input name="email" type="email" placeholder="Email" autocomplete="email" required>
-        <input name="password" type="password" placeholder="Password (8+ characters)" autocomplete="current-password" required>
-        <button type="submit">Log in</button>
-        <button type="button" id="signup-btn" class="secondary">Create account</button>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Password<input name="password" type="password" placeholder="8+ characters" autocomplete="current-password" required></label>
+        <button type="submit" class="wide">Log in</button>
+        <button type="button" id="signup-btn" class="secondary wide">Create account</button>
       </form>
       <p id="auth-error" class="error" hidden></p>
-    </section>
-
-    <div id="app-view" hidden>
-      <section class="card">
-        <h2>Add a medication</h2>
-        <form id="med-form">
-          <input name="dog_name" placeholder="Dog's name" required>
-          <input name="name" placeholder="Medication" required>
-          <input name="dose" placeholder="Dose (e.g. 1 tablet)">
-          <input name="schedule" placeholder="Schedule (e.g. 8am daily)">
-          <button type="submit">Add medication</button>
-        </form>
-        <p id="form-error" class="error" hidden></p>
-      </section>
-
-      <section id="med-list"></section>
     </div>
-  </main>
+  </section>
+
+  <div id="app" hidden>
+    <nav id="sidebar" aria-label="Dogs">
+      <div class="logo">Dog Care Passport</div>
+      <div class="side-label">Your dogs</div>
+      <div id="dog-list"></div>
+      <button type="button" id="add-dog" class="side-btn dashed">+ Add a dog</button>
+      <button type="button" id="join-btn" class="side-btn">Join with a code</button>
+      <div class="side-foot">
+        <div id="user-email"></div>
+        <button type="button" id="logout-btn" class="link">Log out</button>
+      </div>
+    </nav>
+    <main id="main"></main>
+  </div>
+
+  <dialog id="dlg">
+    <form id="dlg-form">
+      <h2 id="dlg-title"></h2>
+      <div id="dlg-fields"></div>
+      <p id="dlg-error" class="error" hidden></p>
+      <div class="row end">
+        <button type="button" id="dlg-cancel" class="secondary">Cancel</button>
+        <button type="submit" id="dlg-ok">Save</button>
+      </div>
+    </form>
+  </dialog>
 
   <script src="app.js"></script>
 </body>

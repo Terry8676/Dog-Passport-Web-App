@@ -9,7 +9,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/dogs", requireAuth, require("./routes/dogs"));
 app.use("/api/meds", requireAuth, require("./routes/meds"));
+app.use("/api/invites", requireAuth, require("./routes/invites"));
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
